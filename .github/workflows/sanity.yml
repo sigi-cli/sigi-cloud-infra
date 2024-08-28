@@ -1,0 +1,29 @@
+name: sanity checks for templates
+
+on:
+  push:
+    branches: [ core ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-templates:
+    runs-on: ubuntu-latest
+    env:
+      OS_AUTH_TYPE: ${{ vars.OS_AUTH_TYPE }}
+      OS_AUTH_URL: ${{ vars.OS_AUTH_URL }}
+      OS_APPLICATION_CREDENTIAL_ID: ${{ vars.OS_APPLICATION_CREDENTIAL_ID }}
+      OS_APPLICATION_CREDENTIAL_SECRET: ${{ secrets.OS_APPLICATION_CREDENTIAL_SECRET }}
+      OS_INTERFACE: ${{ vars.OS_INTERFACE }}
+      OS_IDENTITY_API_VERSION: ${{ vars.OS_IDENTITY_API_VERSION }}
+      OS_REGION_NAME: ${{ vars.OS_REGION_NAME }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.x' }
+      - uses: Gr1N/setup-poetry@v9
+      - run: poetry install
+      - run: poetry run openstack -- orchestration template validate -t stacks/bravo.yml
