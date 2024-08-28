@@ -1,0 +1,66 @@
+heat_template_version: 2021-04-16
+description: sigi cloud
+
+resources:
+
+  first_try_keypair:
+    type: OS::Nova::KeyPair
+    properties:
+      name: blackbox-admin
+      public_key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDcLyJh3r5j06PhRdgscOk3ez9ucGMm1fFALik/gu7bv booniepepper@blackbox'
+
+  first_try_server:
+    type: OS::Nova::Server
+    properties:
+      flavor: m2a.large
+      key_name: { get_resource: first_try_keypair }
+      networks:
+        - subnet: { get_resource: first_try_subnet }
+          floating_ip: { get_resource: first_try_public_ip }
+      security_groups:
+        - { get_resource: first_try_sg }
+      block_device_mapping_v2:
+        - volume_id: { get_resource: first_try_volume }
+
+  first_try_volume:
+    type: OS::Cinder::Volume
+    properties:
+      image: Ubuntu-22.04
+      size: 25 # GB
+
+  first_try_public_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: PublicStatic
+      
+
+  first_try_network:
+    type: OS::Neutron::Net
+
+  first_try_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      cidr: 192.168.0.0/24
+      network: { get_resource: first_try_network }
+
+  first_try_router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info:
+        network: PublicStatic
+
+  first_try_router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router: { get_resource: first_try_router }
+      subnet: { get_resource: first_try_subnet }
+
+  first_try_sg:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - direction: ingress
+          protocol: tcp
+          remote_ip_prefix: '73.181.206.101/32'
+          port_range_min: 22
+          port_range_max: 22
