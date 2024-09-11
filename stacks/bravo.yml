@@ -66,5 +66,5 @@ resources:
   bravo_keypair:
     type: OS::Nova::KeyPair
     properties:
-      name: blackbox-admin
-      public_key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDcLyJh3r5j06PhRdgscOk3ez9ucGMm1fFALik/gu7bv booniepepper@blackbox'
+      name: 2024-09-11-sigi-bravo-key
+      public_key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMcCETGoN4EyyPYPQ9O0K8z5Zs1MpRVk3yP8tadCOoKo justinhill@Justins-MacBook-Pro.local'
