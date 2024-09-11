@@ -55,13 +55,28 @@ resources:
 
   bravo_sg:
     type: OS::Neutron::SecurityGroup
+
+  honbu_sg_rule:
+    type: OS::Neutron::SecurityGroupRule
     properties:
-      rules:
-        - direction: ingress
-          protocol: tcp
-          remote_ip_prefix: '73.181.206.101/32'
-          port_range_min: 22
-          port_range_max: 22
+      description: "本部"
+      direction: ingress
+      port_range_max: 22
+      port_range_min: 22
+      protocol: tcp
+      remote_ip_prefix: '73.181.206.101/32'
+      security_group: { get_resource: bravo_sg }
+
+  whitehouse_sg_rule:
+    type: OS::Neutron::SecurityGroupRule
+    properties:
+      description: whitehouse
+      direction: ingress
+      port_range_max: 22
+      port_range_min: 22
+      protocol: tcp
+      remote_ip_prefix: '74.122.141.153/32'
+      security_group: { get_resource: bravo_sg }
 
   bravo_keypair:
     type: OS::Nova::KeyPair
