@@ -3,7 +3,7 @@
 set -eux
 
 sudo add-apt-repository -y ppa:maveonair/helix-editor
-yes | { sudo apt update -y && sudo apt upgrade -y }
+sudo apt update -y && sudo apt upgrade -y
 
 sudo apt install -y \
 	fish \
