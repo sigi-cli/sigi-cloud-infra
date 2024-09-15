@@ -2,11 +2,10 @@
 
 set -eux
 
-install_rustup() {
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-}
-
-yes 1 | install_rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup-install
+chmod +x ./rustup-install
+./rustup-install -y
+rm ./rustup-install
 
 . "$HOME/.cargo/env"
 cargo install sigi
