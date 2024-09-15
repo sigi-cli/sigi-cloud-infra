@@ -40,6 +40,7 @@ resources:
     properties:
       cidr: 192.168.0.0/24
       network: { get_resource: bravo_network }
+      dns_nameservers: [ 8.8.8.8, 8.8.4.4 ]
 
   bravo_router:
     type: OS::Neutron::Router

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -eux
+
+if [ -z "$1" ]; then
+    2>&1 echo "Usage: $(basename "$0") SSH_HOST"
+	exit 1
+fi
+
+SSH_HOST="$1"
+
+cd "$(dirname "$(dirname "$0")")"
+
+scp bin/inject-nameservers "$SSH_HOST":~
+ssh -qt "$SSH_HOST" 'sudo ./inject-nameservers && rm ./inject-nameservers'
+
+cd "$(mktemp -d)"
+git clone https://github.com/sigi-cli/sigi-cloud-infra.git .
+
+bin/apt-installs

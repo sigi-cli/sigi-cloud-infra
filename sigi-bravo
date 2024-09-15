@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -eux
+
+resolv=/etc/resolv.conf
+
+if [ ! -f $resolv ]; then
+    touch $resolv
+    >>$resolv echo 'nameserver 8.8.8.8'
+    >>$resolv echo 'nameserver 8.8.4.4'
+else
+    echo 'Expect nameservers should exist...'
+    cat $resolv
+fi
