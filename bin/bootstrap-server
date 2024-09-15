@@ -9,12 +9,14 @@ fi
 
 SSH_HOST="$1"
 
+remote() {
+    ssh -qt "$SSH_HOST" "$*"
+}
+
 cd "$(dirname "$(dirname "$0")")"
 
 scp bin/inject-nameservers "$SSH_HOST":~
-ssh -qt "$SSH_HOST" 'sudo ./inject-nameservers && rm ./inject-nameservers'
+remote 'sudo ./inject-nameservers && rm ./inject-nameservers'
 
-cd "$(mktemp -d)"
-git clone https://github.com/sigi-cli/sigi-cloud-infra.git .
-
-bin/apt-installs
+remote 'mkdir infra && cd infra && git clone https://github.com/sigi-cli/sigi-cloud-infra.git .'
+remote 'infra/bin/apt-installs'
