@@ -16,7 +16,8 @@ remote() {
 cd "$(dirname "$(dirname "$0")")"
 
 scp bin/inject-nameservers "$SSH_HOST":~
-remote 'sudo ./inject-nameservers && rm ./inject-nameservers'
+remote 'sudo ./inject-nameservers && rm inject-nameservers'
 
-remote 'mkdir infra && cd infra && git clone https://github.com/sigi-cli/sigi-cloud-infra.git .'
+remote 'rm -rf infra && mkdir infra && cd infra && git clone https://github.com/sigi-cli/sigi-cloud-infra.git .'
 remote 'infra/bin/apt-installs'
+remote 'infra/bin/other-installs'

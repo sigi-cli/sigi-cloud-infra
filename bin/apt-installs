@@ -2,8 +2,11 @@
 
 set -eux
 
+sudo add-apt-repository ppa:maveonair/helix-editor
 sudo apt update -y && sudo apt upgrade -y
 
 sudo apt install -y \
 	fish \
-	helix
+	helix \
+	htop \
+	tree
